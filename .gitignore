@@ -1,0 +1,12 @@
+.env
+__pycache__/
+instance/
+.webassets-cache
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pot
+node_modules/

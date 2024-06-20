@@ -1,0 +1,98 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+
+nav {
+    display: flex;
+    justify-content: center;
+    margin-top: .05em;
+}
+
+nav a {
+    margin: 0 .5em;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 1em;
+    color: #444;
+    font-weight: bold;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2em;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2em;
+    gap: 1.5em; /* Añadido para separar los elementos */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+.topic {
+    /*background-color: #fff;*/
+    background-color: #2d2d2d; /* Color de pizarrón */
+    /*border: 1px solid #ddd;*/
+    border: 1px solid #1c1c1c;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    text-align: center;
+    width: 420px; /* Ajustado el tamaño de la tarjeta */
+    padding: 1em;
+    transition: transform 0.3s; /* Añadir transición para efecto hover */
+}
+
+.topic:hover {
+    transform: scale(1.05); /* Efecto hover */
+}
+
+.topic img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 1em auto; /* Centrar la imagen y añadir margen inferior */
+    border-radius: 0; /* Eliminar bordes redondeados */
+    width: 400px; /* Ajusta este valor al tamaño deseado */
+    height: 220px; /* Ajusta este valor al tamaño deseado */
+}
+
+.topic a {
+    
+    display: block;
+    padding: 0.5em;
+    text-decoration: none;
+    /*color: #007bff;*/
+    color: #ffffff;
+    font-family: 'Patrick Hand', cursive; /* Fuente de gis */
+    font-size: 1.5em; /* Tamaño de la fuente */
+    background-color: #2d2d2d; /* Color de fondo del pizarrón */
+    border: 1px solid #1c1c1c; /* Bordes para darle apariencia de pizarrón */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2); /* Sombra interna */
+    border-radius: 5px; /* Bordes redondeados */
+    font-weight: bold;
+    transition: color 0.3s; /* Añadir transición para el efecto hover */
+}
+
+.topic a:hover {
+    /*color: #0056b3;*/
+    background-color: #1c1c1c;
+}

@@ -1,0 +1,135 @@
+sammathtutor
+├── .vscode
+│   ├── settings.json
+│   ├── launch.json
+│   └── extensions.json
+├── app
+│   ├── __init__.py
+│   ├── routes.py
+│   ├── static
+│   │   ├── css
+│   │   │   ├── main.css
+│   │   │   └── math.css
+│   │   ├── js
+│   │   │   └── main.js
+│   │   └── images
+│   │       ├── arithmetic.jpg
+│   │       ├── algebra.jpg
+│   │       ├── geometry.jpg
+│   │       ├── trigonometry.jpg
+│   │       └── calculus.jpg
+│   ├── templates
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   └── subjects
+│   │       └── math.html
+├── .gitignore
+├── .env
+├── README.md
+├── requirements.txt
+├── config.py
+└── run.py
+
+
+
+
+
+
+
+
+=================================================================
+
+SamMathTutor
+├── Home
+│   ├── Introduction
+│   │   └── Who is SamMathTutor?
+│   ├── Login / Register
+│   ├── User Profile
+│   │   ├── Personal Information
+│   │   ├── Progress
+│   │   └── Settings
+│   └── Help
+│       └── FAQs
+├── Subjects
+│   ├── Mathematics
+│   │   ├── Basic
+│   │   │   ├── Arithmetic
+│   │   │   ├── Algebra
+│   │   │   └── Geometry
+│   │   ├── Intermediate
+│   │   │   ├── Trigonometry
+│   │   │   ├── Pre-Calculus
+│   │   │   └── Statistics
+│   │   └── Advanced
+│   │       ├── Calculus
+│   │       ├── Linear Algebra
+│   │       └── Number Theory
+│   ├── Physics
+│   │   ├── Basic
+│   │   │   ├── Mechanics
+│   │   │   ├── Thermodynamics
+│   │   │   └── Optics
+│   │   ├── Intermediate
+│   │   │   ├── Electromagnetism
+│   │   │   ├── Waves and Vibrations
+│   │   │   └── Modern Physics
+│   │   └── Advanced
+│   │       ├── Quantum Mechanics
+│   │       ├── Relativity
+│   │       └── Particle Physics
+│   ├── Chemistry
+│   │   ├── Basic
+│   │   │   ├── General Chemistry
+│   │   │   └── Inorganic Chemistry
+│   │   ├── Intermediate
+│   │   │   ├── Organic Chemistry
+│   │   │   ├── Biochemistry
+│   │   │   └── Analytical Chemistry
+│   │   └── Advanced
+│   │       ├── Physical Chemistry
+│   │       ├── Quantum Chemistry
+│   │       └── Theoretical Chemistry
+│   ├── Biology
+│   │   ├── Basic
+│   │   │   ├── Cell Biology
+│   │   │   └── Genetics
+│   │   ├── Intermediate
+│   │   │   ├── Ecology
+│   │   │   ├── Microbiology
+│   │   │   └── Anatomy and Physiology
+│   │   └── Advanced
+│   │       ├── Biotechnology
+│   │       ├── Molecular Biology
+│   │       └── Neuroscience
+│   └── Computer Science
+│       ├── Basic
+│       │   ├── Programming Fundamentals
+│       │   └── Algorithms and Data Structures
+│       ├── Intermediate
+│       │   ├── Object-Oriented Programming
+│       │   ├── Databases
+│       │   └── Computer Networks
+│       └── Advanced
+│           ├── Artificial Intelligence
+│           ├── Data Science
+│           └── Cybersecurity
+├── Resources
+│   ├── Books
+│   ├── Articles
+│   ├── Educational Videos
+│   ├── Forums
+│   └── Glossary of Terms
+├── Assessments
+│   ├── Tests and Quizzes
+│   ├── Mock Exams
+│   ├── Progress Tracking
+│   └── Certifications
+├── Community
+│   ├── Discussion Forums
+│   ├── Study Groups
+│   ├── Live Tutoring
+│   └── Events and Webinars
+└── Support
+    ├── Contact Support
+    ├── Report Issues
+    └── Feedback
