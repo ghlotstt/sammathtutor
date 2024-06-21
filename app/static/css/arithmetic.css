@@ -2,16 +2,35 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
     color: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    background-image: url('{{ url_for('static', filename='images/ui_aritmetic_bacground_2.png') }}');
+    background-size: 150%; /* Incrementa el tamaño de la imagen */
+    background-position: top center; /* Cambia la posición a la parte superior centrada */
+    background-repeat: no-repeat;
+    opacity: 0.1; /* Baja opacidad para mayor sutileza */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Asegura que esté detrás de todo el contenido */
 }
 
 .chat-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2em;
-    background-color: #2d2d2d; /* Color de pizarrón */
+    background-color: rgba(45, 45, 45, 0.95); /* Color de pizarrón con opacidad */
     border: 10px solid #8b4513; /* Marco de madera */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
 }
 
 .chat-box {
@@ -52,7 +71,6 @@ body {
 .prompt-area button:hover {
     background-color: #0056b3;
 }
-
 
 .user-message, .assistant-message {
     padding: 0.5em;
