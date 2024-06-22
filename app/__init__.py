@@ -2,10 +2,9 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('config.Config')
 
+    # Importar rutas
     with app.app_context():
-        # Importar las rutas
         from . import routes
 
-        return app
+    return app

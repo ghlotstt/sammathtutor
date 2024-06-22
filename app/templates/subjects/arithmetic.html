@@ -1,37 +1,39 @@
-{% extends "base.html" %}
-
-{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arithmetic Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/arithmetic.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
+
     <style>
         body::before {
             content: "";
             background-image: url('{{ url_for('static', filename='images/arithmetic_background_10.png') }}');
-            background-size: 100%; /* Incrementa el tamaño de la imagen */
-            background-position: top center; /* Cambia la posición a la parte superior centrada */
+            background-size: 100%;
+            background-position: top center;
             background-repeat: no-repeat;
-            opacity: 0.1; /* Baja opacidad para mayor sutileza */
+            opacity: 0.1;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Asegura que esté detrás de todo el contenido */
+            z-index: -1;
+        }
     </style>
-{% endblock %}
+</head>
+<body>
+    <div class="chat-container">
+        <div id="output-area" class="chat-box"></div>
 
-{% block content %}
-<div class="chat-container">
-    <div class="chat-box" id="chat-box">
-        <!-- Chat messages will be appended here -->
+        <div class="prompt-area">
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button id="send-button">Send</button>
+        </div>
     </div>
-    <div class="prompt-area">
-        <input type="text" id="user-input" placeholder="Type your question here...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-{% endblock %}
+    
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>

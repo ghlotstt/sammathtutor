@@ -23,6 +23,7 @@ sammathtutor
 │   │   ├── index.html
 │   │   └── subjects
 │   │       └── math.html
+            |__ arithmetic.py
 ├── .gitignore
 ├── .env
 ├── README.md
