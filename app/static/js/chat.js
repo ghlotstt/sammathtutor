@@ -1,13 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const sendButton = document.getElementById("send-button");
+    const sendIcon = document.getElementById("send-icon");
     const userInput = document.getElementById("user-input");
     const outputArea = document.getElementById("output-area");
+    const fileInput = document.getElementById("file-input");
+    const attachIcon = document.getElementById("attach-icon");
 
-    console.log("sendButton:", sendButton); // Log para verificar el botón de envío
+    console.log("sendIcon:", sendIcon); // Log para verificar el ícono de envío
     console.log("userInput:", userInput); // Log para verificar el campo de entrada del usuario
     console.log("outputArea:", outputArea); // Log para verificar el área de salida
+    console.log("fileInput:", fileInput); // Log para verificar el campo de archivo
+    console.log("attachIcon:", attachIcon); // Log para verificar el ícono de adjuntar
 
-    if (!sendButton || !userInput || !outputArea) {
+    if (!sendIcon || !userInput || !outputArea || !fileInput || !attachIcon) {
         console.error("Some elements are missing. Please check the HTML structure.");
         return;
     }
@@ -17,31 +21,55 @@ document.addEventListener("DOMContentLoaded", function() {
     function sendMessage() {
         const userMessage = userInput.value;
         console.log("User message:", userMessage);  // Log para verificar el mensaje del usuario
-        if (userMessage.trim() === "") return;
+        if (userMessage.trim() === "" && fileInput.files.length === 0) return;
 
-        // Mostrar el mensaje en la UI
+        // Mostrar el mensaje en la UI con 'User' estilizado
         const messageElement = document.createElement("div");
-        messageElement.textContent = `User: ${userMessage}`;
+        messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
         messageElement.classList.add("user-message");
         outputArea.appendChild(messageElement);
 
+        const formData = new FormData();
+        formData.append("question", userMessage);
+        formData.append("conversation_history", JSON.stringify(conversationHistory));
+
+        /*if (fileInput.files.length > 0) {
+            formData.append("file", fileInput.files[0]);
+            // Reset file input
+            fileInput.value = "";
+        }*/
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            formData.append("file", file);
+
+            // Mostrar la imagen en la UI
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                const imgElement = document.createElement("img");
+                imgElement.src = e.target.result;
+                imgElement.classList.add("user-image");
+                outputArea.appendChild(imgElement);
+            };
+            fileReader.readAsDataURL(file);
+
+            // Reset file input
+            fileInput.value = "";
+        }
+
+
         fetch("/ask_arithmetic", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                question: userMessage,
-                conversation_history: conversationHistory
-            })
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
             const assistantMessage = data.answer;
             conversationHistory = data.conversation_history;
 
+            // Mostrar el mensaje en la UI con 'Assistant' estilizado
             const assistantMessageElement = document.createElement("div");
-            assistantMessageElement.textContent = `Assistant: ${assistantMessage}`;
+            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
 
@@ -54,8 +82,12 @@ document.addEventListener("DOMContentLoaded", function() {
         userInput.value = ""; // Limpiar el campo de entrada
     }
 
-    sendButton.addEventListener("click", function() {
-        console.log("Send button clicked");  // Log para el botón de envío
+    attachIcon.addEventListener("click", function() {
+        fileInput.click();
+    });
+
+    sendIcon.addEventListener("click", function() {
+        console.log("Send icon clicked");  // Log para el ícono de envío
         sendMessage();
     });
 

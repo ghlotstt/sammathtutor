@@ -17,12 +17,19 @@ def arithmetic():
 
 @app.route('/ask_arithmetic', methods=['POST'])
 def ask_arithmetic():
-    data = request.json
-    question = data.get("question")
-    conversation_history = data.get("conversation_history", [])
+    question = request.form.get("question")
+    conversation_history = request.form.get("conversation_history")
+    file = request.files.get("file")
+
+    if conversation_history:
+        conversation_history = eval(conversation_history)  # Convertir de string a lista
 
     print("Received question:", question)  # Log para la pregunta recibida
     print("Conversation history:", conversation_history)  # Log para la historia de la conversación
+
+    if file:
+        print("Received file:", file.filename)  # Log para el archivo recibido
+        # Aquí puedes manejar el archivo como sea necesario para tu aplicación
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

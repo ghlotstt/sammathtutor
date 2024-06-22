@@ -45,6 +45,7 @@ body::before {
     color: #ffffff;
     font-family: 'Patrick Hand', cursive; /* Fuente de gis */
     border-bottom: 2px solid #8b4513;
+    /*font-size: 1.2em;*/ /* Aumenta el tamaño de la fuente aquí */
 }
 
 .prompt-area {
@@ -54,7 +55,18 @@ body::before {
     background-color: #2d2d2d;
 }
 
-.prompt-area input {
+.prompt-area i {
+    color: #007bff;
+    cursor: pointer;
+    margin-left: 0.5em;
+    font-size: 1.5em;
+}
+
+.prompt-area i:hover {
+    color: #0056b3;
+}
+
+.prompt-area input[type="text"] {
     flex: 1;
     padding: 0.5em;
     font-size: 1em;
@@ -73,10 +85,22 @@ body::before {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 0.5em;
 }
 
 .prompt-area button:hover {
     background-color: #0056b3;
+}
+
+#attach-icon {
+    color: #007bff;
+    cursor: pointer;
+    margin-right: 0.5em;
+    font-size: 1.5em;
+}
+
+#attach-icon:hover {
+    color: #0056b3;
 }
 
 .user-message, .assistant-message {
@@ -90,10 +114,18 @@ body::before {
     /*background-color: #007bff;*/
     color: #fff;
     text-align: right;
+    
 }
 
 .assistant-message {
     /*background-color: #8b4513;*/
     color: #fff;
     text-align: left;
-}
+    
+    .user-image {
+        max-width: 100%;
+        height: auto;
+        margin: 0.5em 0;
+        border-radius: 4px;
+        display: block;
+    }
