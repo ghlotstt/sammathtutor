@@ -17,17 +17,14 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     let conversationHistory = [];
+    
 
     function sendMessage() {
         const userMessage = userInput.value;
         console.log("User message:", userMessage);  // Log para verificar el mensaje del usuario
         if (userMessage.trim() === "" && fileInput.files.length === 0) return;
 
-        // Mostrar el mensaje en la UI con 'User' estilizado
-        const messageElement = document.createElement("div");
-        messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
-        messageElement.classList.add("user-message");
-        outputArea.appendChild(messageElement);
+        
 
         const formData = new FormData();
         formData.append("question", userMessage);
@@ -39,24 +36,39 @@ document.addEventListener("DOMContentLoaded", function() {
             fileInput.value = "";
         }*/
 
+        let isImage = false;
+
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
             formData.append("file", file);
+            formData.append("type", "image");
+            isImage = true;
 
             // Mostrar la imagen en la UI
             const fileReader = new FileReader();
             fileReader.onload = function(e) {
+                const imgContainer = document.createElement("div");
+                imgContainer.classList.add("user-image-container");
                 const imgElement = document.createElement("img");
                 imgElement.src = e.target.result;
                 imgElement.classList.add("user-image");
                 outputArea.appendChild(imgElement);
+                outputArea.appendChild(imgContainer);
             };
             fileReader.readAsDataURL(file);
 
             // Reset file input
             fileInput.value = "";
-        }
+            
+        } 
 
+        // Mostrar el mensaje en la UI con 'User' estilizado
+        const messageElement = document.createElement("div");
+        messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
+        messageElement.classList.add("user-message");
+        outputArea.appendChild(messageElement);
+
+        
 
         fetch("/ask_arithmetic", {
             method: "POST",
