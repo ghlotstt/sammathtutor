@@ -5,70 +5,35 @@ document.addEventListener("DOMContentLoaded", function() {
     const fileInput = document.getElementById("file-input");
     const attachIcon = document.getElementById("attach-icon");
 
-    console.log("sendIcon:", sendIcon); // Log para verificar el ícono de envío
-    console.log("userInput:", userInput); // Log para verificar el campo de entrada del usuario
-    console.log("outputArea:", outputArea); // Log para verificar el área de salida
-    console.log("fileInput:", fileInput); // Log para verificar el campo de archivo
-    console.log("attachIcon:", attachIcon); // Log para verificar el ícono de adjuntar
-
-    if (!sendIcon || !userInput || !outputArea || !fileInput || !attachIcon) {
-        console.error("Some elements are missing. Please check the HTML structure.");
-        return;
-    }
-
     let conversationHistory = [];
-    
+    let imageReady = false;
+    let loadingIndicator = null;
 
     function sendMessage() {
         const userMessage = userInput.value;
-        console.log("User message:", userMessage);  // Log para verificar el mensaje del usuario
-        if (userMessage.trim() === "" && fileInput.files.length === 0) return;
-
-        
+        if (userMessage.trim() === "" && fileInput.files.length === 0 && !imageReady) return;
 
         const formData = new FormData();
-        formData.append("question", userMessage);
-        formData.append("conversation_history", JSON.stringify(conversationHistory));
-
-        /*if (fileInput.files.length > 0) {
-            formData.append("file", fileInput.files[0]);
-            // Reset file input
-            fileInput.value = "";
-        }*/
-
         let isImage = false;
 
-        if (fileInput.files.length > 0) {
+        if (imageReady) {
             const file = fileInput.files[0];
             formData.append("file", file);
             formData.append("type", "image");
+            formData.append("question", userMessage);
+            formData.append("conversation_history", JSON.stringify(conversationHistory));
             isImage = true;
+            imageReady = false;
+        } else {
+            formData.append("question", userMessage);
+            formData.append("type", "text");
+            formData.append("conversation_history", JSON.stringify(conversationHistory));
 
-            // Mostrar la imagen en la UI
-            const fileReader = new FileReader();
-            fileReader.onload = function(e) {
-                const imgContainer = document.createElement("div");
-                imgContainer.classList.add("user-image-container");
-                const imgElement = document.createElement("img");
-                imgElement.src = e.target.result;
-                imgElement.classList.add("user-image");
-                outputArea.appendChild(imgElement);
-                outputArea.appendChild(imgContainer);
-            };
-            fileReader.readAsDataURL(file);
-
-            // Reset file input
-            fileInput.value = "";
-            
-        } 
-
-        // Mostrar el mensaje en la UI con 'User' estilizado
-        const messageElement = document.createElement("div");
-        messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
-        messageElement.classList.add("user-message");
-        outputArea.appendChild(messageElement);
-
-        
+            const messageElement = document.createElement("div");
+            messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
+            messageElement.classList.add("user-message");
+            outputArea.appendChild(messageElement);
+        }
 
         fetch("/ask_arithmetic", {
             method: "POST",
@@ -79,33 +44,77 @@ document.addEventListener("DOMContentLoaded", function() {
             const assistantMessage = data.answer;
             conversationHistory = data.conversation_history;
 
-            // Mostrar el mensaje en la UI con 'Assistant' estilizado
             const assistantMessageElement = document.createElement("div");
             assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
 
-            console.log("Assistant message:", assistantMessage);  // Log para la respuesta del asistente
+            // Remover el indicador de carga
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+                loadingIndicator = null;
+            }
         })
         .catch(error => {
-            console.error("Error:", error);  // Log para errores
+            console.error("Error:", error);
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+                loadingIndicator = null;
+            }
         });
 
-        userInput.value = ""; // Limpiar el campo de entrada
+        userInput.value = "";
+        sendIcon.classList.remove("blink"); // Asegurarse de que la clase de parpadeo se elimine
+    
     }
 
     attachIcon.addEventListener("click", function() {
         fileInput.click();
     });
 
+    fileInput.addEventListener("change", function() {
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                const imgContainer = document.createElement("div");
+                imgContainer.classList.add("user-image-container");
+
+                const imgElement = document.createElement("img");
+                imgElement.src = e.target.result;
+                imgElement.classList.add("user-image");
+
+                loadingIndicator = document.createElement("div");
+                //loadingIndicator.classList.add("loading-indicator");
+                loadingIndicator.classList.add("spinner");
+
+                imgContainer.appendChild(imgElement);
+                imgContainer.appendChild(loadingIndicator);
+                outputArea.appendChild(imgContainer);
+
+                sendIcon.disabled = true; // Deshabilitar el botón de envío
+
+                // Simular carga completa después de 3 segundos
+                setTimeout(function() {
+                    loadingIndicator.remove();
+                    loadingIndicator = null;
+                    sendIcon.disabled = false; // Habilitar el botón de envío
+                    sendIcon.classList.add("blink"); // Añadir clase de parpadeo
+                }, 3000);
+
+                imageReady = true;
+            };
+            fileReader.readAsDataURL(file);
+        }
+    });
+
     sendIcon.addEventListener("click", function() {
-        console.log("Send icon clicked");  // Log para el ícono de envío
         sendMessage();
     });
 
     userInput.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
-            console.log("Enter key pressed");  // Log para la tecla Enter
             sendMessage();
         }
     });
