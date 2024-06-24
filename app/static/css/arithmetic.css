@@ -1,3 +1,29 @@
+/* Estilo para el menú de navegación */
+.nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #333;
+    padding: 5px 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    font-family: 'Patrick Hand', cursive; /* Ajustar la fuente según el estilo de la página */
+}
+
+.nav a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
@@ -6,24 +32,9 @@ body {
     overflow: hidden;
 }
 
-body::before {
-    content: "";
-    background-image: url('{{ url_for('static', filename='images/ui_aritmetic_bacground_2.png') }}');
-    background-size: 150%; /* Incrementa el tamaño de la imagen */
-    background-position: top center; /* Cambia la posición a la parte superior centrada */
-    background-repeat: no-repeat;
-    opacity: 0.1; /* Baja opacidad para mayor sutileza */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Asegura que esté detrás de todo el contenido */
-}
-
 .chat-container {
-    max-width: 1020px;
-    margin: 0 auto;
+    max-width: 1150px;
+    margin: 60px auto 0; /* Ajustar el margen superior para que no interfiera con el menú */
     padding: 0.5em;
     background-color: rgba(45, 45, 45, 0.95); /* Color de pizarrón con opacidad */
     border: 15px solid #8b4513; /* Marco de madera */
@@ -32,7 +43,7 @@ body::before {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    height: 85vh;
+    height: 80vh;
     position: relative;
     z-index: 1;
 }
@@ -48,7 +59,7 @@ body::before {
     /*font-size: 1.2em;*/ /* Aumenta el tamaño de la fuente aquí */
 }
 
-* Clearfix para evitar problemas de flotación */
+/* Clearfix para evitar problemas de flotación */
 .chat-box::after {
     content: "";
     display: table;
@@ -81,7 +92,7 @@ body::before {
     border: none;
     border-radius: 4px;
     margin-right: 1em;
-     background-color: #fff;
+    background-color: #fff;
     color: #000;
 }
 
@@ -119,20 +130,16 @@ body::before {
 }
 
 .user-message {
-    /*background-color: #007bff;*/
     color: #fff;
     text-align: right;
     display: flex;
     flex-direction: column;
     align-items: flex-end; /* Alinea el contenido del mensaje a la derecha */
-    
 }
 
 .assistant-message {
-    /*background-color: #8b4513;*/
     color: #fff;
     text-align: left;
-    
 }
 
 .user-image {
@@ -140,11 +147,9 @@ body::before {
     height: auto;
     margin: 0.5em 0;
     border-radius: 4px;
-    /*display: block;*/
     display: inline-block;
     max-height: 300px; /* Establece la altura máxima para las imágenes */
     width: auto;
-  
 }
 
 .user-image-container {
@@ -152,7 +157,6 @@ body::before {
     display: flex;
     justify-content: flex-end; /* Asegura que el contenido dentro del contenedor esté a la derecha */
     width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
-
 }
 
 .loading-indicator {
@@ -167,7 +171,6 @@ body::before {
     border-radius: 50%;
     animation: spinner 2s linear infinite;
 }
-
 
 @keyframes spinner {
     0% { transform: rotate(0deg); }
@@ -190,6 +193,7 @@ body::before {
 .blink {
     animation: blinker 1s linear infinite;
 }
+
 @keyframes blinker {
     50% { opacity: 0; }
 }

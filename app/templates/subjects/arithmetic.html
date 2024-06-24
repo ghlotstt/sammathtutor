@@ -19,13 +19,23 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 130%;
+            height: 130%;
             z-index: -1;
         }
     </style>
 </head>
 <body>
+    <div class="nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('mathematics') }}">Mathematics</a>
+        <a href="{{ url_for('arithmetic') }}">Arithmetic</a>
+        <a href="#">Algebra</a>
+        <a href="#">Geometry</a>
+        <a href="#">Trigonometry</a>
+        <a href="#">Calculus</a>
+    </div>
+    
     <div class="chat-container">
         <div id="output-area" class="chat-box"></div>
 
