@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("Marked.js loaded:", typeof marked); // Debería imprimir "function"
     const sendIcon = document.getElementById("send-icon");
     const userInput = document.getElementById("user-input");
     const outputArea = document.getElementById("output-area");
@@ -11,6 +12,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function scrollToBottom() {
         outputArea.scrollTop = outputArea.scrollHeight;
+    }
+
+    
+    function formatAssistantMessage(message) {
+        console.log("Original Assistant Message:", message); // Log para verificar el mensaje original
+        let formattedMessage;
+        try {
+            formattedMessage = marked.parse(message);
+        } catch (error) {
+            console.error("Error while parsing message with marked:", error);
+            formattedMessage = message; // Fallback to raw message if parsing fails
+        }
+        console.log("Formatted Assistant Message:", formattedMessage); // Log para verificar el mensaje formateado
+        return formattedMessage;
     }
 
     function sendMessage() {
@@ -48,7 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            const assistantMessage = data.answer;
+            console.log("Response Data:", data); // Log para verificar los datos de respuesta
+            //const assistantMessage = data.answer;
+            const assistantMessage = formatAssistantMessage(data.answer);
             conversationHistory = data.conversation_history;
 
             const assistantMessageElement = document.createElement("div");

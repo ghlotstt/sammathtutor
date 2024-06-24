@@ -5,6 +5,7 @@ import asyncio
 import nest_asyncio
 from openai import AsyncOpenAI
 
+
 # Aplicar nest_asyncio
 nest_asyncio.apply()
 
@@ -71,3 +72,4 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
     conversation_history.append({"user": question, "assistant": answer})
     
     return answer, conversation_history
+
