@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", function() {
     let imageReady = false;
     let loadingIndicator = null;
 
+    function scrollToBottom() {
+        outputArea.scrollTop = outputArea.scrollHeight;
+    }
+
     function sendMessage() {
         const userMessage = userInput.value;
         if (userMessage.trim() === "" && fileInput.files.length === 0 && !imageReady) return;
@@ -33,6 +37,9 @@ document.addEventListener("DOMContentLoaded", function() {
             messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
             messageElement.classList.add("user-message");
             outputArea.appendChild(messageElement);
+            //scrollToBottom();
+            setTimeout(scrollToBottom, 100); // Asegurarse de que se desplace hacia abajo después de un breve retraso
+
         }
 
         fetch("/ask_arithmetic", {
@@ -48,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
             assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
+            scrollToBottom();
 
             // Remover el indicador de carga
             if (loadingIndicator) {
@@ -92,6 +100,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 imgContainer.appendChild(imgElement);
                 imgContainer.appendChild(loadingIndicator);
                 outputArea.appendChild(imgContainer);
+                //scrollToBottom();
+                setTimeout(scrollToBottom, 100); // Asegurarse de que se desplace hacia abajo después de un breve retraso
+
 
                 sendIcon.disabled = true; // Deshabilitar el botón de envío
 
@@ -101,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     loadingIndicator = null;
                     sendIcon.disabled = false; // Habilitar el botón de envío
                     sendIcon.classList.add("blink"); // Añadir clase de parpadeo
+                    scrollToBottom(); // Desplazarse hacia abajo después de que el indicador de carga se haya removido
                 }, 3000);
 
                 imageReady = true;
@@ -110,11 +122,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sendIcon.addEventListener("click", function() {
+        sendIcon.classList.remove("blink"); // Quitar clase de parpadeo al enviar
         sendMessage();
     });
 
     userInput.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
+            sendIcon.classList.remove("blink"); // Quitar clase de parpadeo al enviar
             sendMessage();
         }
     });
