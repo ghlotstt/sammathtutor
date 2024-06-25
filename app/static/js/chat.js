@@ -74,6 +74,9 @@ document.addEventListener("DOMContentLoaded", function() {
             outputArea.appendChild(assistantMessageElement);
             scrollToBottom();
 
+            // Renderizar las ecuaciones con MathJax
+            MathJax.typesetPromise();
+
             // Remover el indicador de carga
             if (loadingIndicator) {
                 loadingIndicator.remove();
@@ -133,6 +136,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 }, 3000);
 
                 imageReady = true;
+                describeImage(file).then(description => {
+                    sendMessage(description);
+                });
             };
             fileReader.readAsDataURL(file);
         }
