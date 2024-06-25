@@ -74,8 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
             outputArea.appendChild(assistantMessageElement);
             scrollToBottom();
 
-            // Renderizar las ecuaciones con MathJax
-            MathJax.typesetPromise();
+           
 
             // Remover el indicador de carga
             if (loadingIndicator) {
