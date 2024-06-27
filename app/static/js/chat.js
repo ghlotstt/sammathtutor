@@ -15,19 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     
-    function formatAssistantMessage(message) {
-        console.log("Original Assistant Message:", message); // Log para verificar el mensaje original
-        let formattedMessage;
-        try {
-            formattedMessage = marked.parse(message);
-        } catch (error) {
-            console.error("Error while parsing message with marked:", error);
-            formattedMessage = message; // Fallback to raw message if parsing fails
-        }
-        console.log("Formatted Assistant Message:", formattedMessage); // Log para verificar el mensaje formateado
-        return formattedMessage;
-    }
-
     function sendMessage() {
         const userMessage = userInput.value;
         if (userMessage.trim() === "" && fileInput.files.length === 0 && !imageReady) return;
@@ -64,8 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             console.log("Response Data:", data); // Log para verificar los datos de respuesta
-            //const assistantMessage = data.answer;
-            const assistantMessage = formatAssistantMessage(data.answer);
+            const assistantMessage = data.answer;  
             conversationHistory = data.conversation_history;
 
             const assistantMessageElement = document.createElement("div");
