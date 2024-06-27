@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Ensure consistent formatting for sections and lists
         message = message.replace(/(\*\*.+?\*\*)/g, "<strong>$1</strong>");
         message = message.replace(/<strong>\*\*(.+?)\*\*<\/strong>/g, "<strong>$1</strong>");
-        //message = message.replace(/###\s/g, "<h3>").replace(/(<br>)+/g, "<br>");
+        message = message.replace(/###\s/g, "<h3>").replace(/(<br>)+/g, "<br>");
         return `<div>${message}</div>`;
     }
     
