@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
             scrollToBottom();
-
+            MathJax.typeset();
            
 
             // Remover el indicador de carga
