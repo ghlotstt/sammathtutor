@@ -141,6 +141,7 @@ body {
     color: #fff;
     text-align: left;
     margin-bottom: 1em;
+    line-height: 1.6; /* Aumenta el espacio entre líneas */
 }
 
 .assistant-message ul,
@@ -148,6 +149,7 @@ body {
     margin: 0;
     margin-left: 1.5em;
     padding-left: 1.5em;
+    margin-bottom: 1em; /* Añade espacio adicional debajo de las listas */
 }
 
 .assistant-message li {
