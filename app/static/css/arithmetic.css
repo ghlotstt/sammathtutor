@@ -140,22 +140,30 @@ body {
 .assistant-message {
     color: #fff;
     text-align: left;
+    margin-bottom: 1em;
 }
 
 .assistant-message ul,
 .assistant-message ol {
     margin: 0;
-    padding-left: 20px; /* Ajustar la sangría para la lista */
+    margin-left: 1.5em;
+    padding-left: 1.5em;
 }
 
 .assistant-message li {
-    margin-bottom: 5px; /* Espacio entre los elementos de la lista */
+    margin-bottom: 0.5em; /* Espacio entre los elementos de la lista */
     line-height: 1.5; /* Altura de línea para mejorar la legibilidad */
 }
 
 .assistant-message p {
-    margin-bottom: 10px; /* Espacio entre párrafos */
+    margin-bottom: 1em; /* Espacio entre párrafos */
 }
+
+.assistant-message div {
+    margin-bottom: 1em;
+}
+
+
 
 
 .user-image {

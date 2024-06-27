@@ -14,6 +14,19 @@ document.addEventListener("DOMContentLoaded", function() {
         outputArea.scrollTop = outputArea.scrollHeight;
     }
 
+    function formatAssistantMessage(message) {
+        // Convert line breaks to <br> tags
+        message = message.replace(/\n/g, "<br>");
+        // Convert numbered lists
+        message = message.replace(/(\d+\.)\s/g, "$1&nbsp;");
+        // Convert bullet points
+        message = message.replace(/-\s/g, "&nbsp;&nbsp;&nbsp;&nbsp;- ");
+        // Ensure consistent formatting for sections and lists
+        message = message.replace(/(\*\*.+?\*\*)/g, "<strong>$1</strong>");
+        message = message.replace(/<strong>\*\*(.+?)\*\*<\/strong>/g, "<strong>$1</strong>");
+        //message = message.replace(/###\s/g, "<h3>").replace(/(<br>)+/g, "<br>");
+        return `<div>${message}</div>`;
+    }
     
     function sendMessage() {
         const userMessage = userInput.value;
@@ -55,7 +68,8 @@ document.addEventListener("DOMContentLoaded", function() {
             conversationHistory = data.conversation_history;
 
             const assistantMessageElement = document.createElement("div");
-            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
+            //assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
+            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${formatAssistantMessage(assistantMessage)}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
             scrollToBottom();
