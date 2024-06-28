@@ -27,6 +27,19 @@ document.addEventListener("DOMContentLoaded", function() {
         message = message.replace(/###\s/g, "<h3>").replace(/(<br>)+/g, "<br>");
         return `<div>${message}</div>`;
     }*/
+
+    function renderMathMessage(rawMessage) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = rawMessage;
+        MathJax.typesetPromise([tempDiv]).then(() => {
+            const renderedMessage = tempDiv.innerHTML;
+            const assistantMessageElement = document.createElement("div");
+            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${renderedMessage}`;
+            assistantMessageElement.classList.add("assistant-message");
+            outputArea.appendChild(assistantMessageElement);
+            scrollToBottom();
+        });
+    }
     
     function sendMessage() {
         const userMessage = userInput.value;
@@ -67,12 +80,18 @@ document.addEventListener("DOMContentLoaded", function() {
             const assistantMessage = data.answer;  
             conversationHistory = data.conversation_history;
 
+
+             // Llamar a la función de renderizado en lugar de insertar directamente el mensaje
+             renderMathMessage(assistantMessage);
+
+            // nota eta parte si se descomenta se tiene que eliminar lafincion `renderMathMessage(assistantMessage);` y la funcion completa arriba de `renderMathMessage`
+            /* 
             const assistantMessageElement = document.createElement("div");
             assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${assistantMessage}`;
             //assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${formatAssistantMessage(assistantMessage)}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
-            scrollToBottom();
+            scrollToBottom();*/
             //MathJax.typeset();
            
 
