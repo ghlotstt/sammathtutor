@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function scrollToBottom() {
         outputArea.scrollTop = outputArea.scrollHeight;
     }
-/*
+
     function formatAssistantMessage(message) {
         // Convert line breaks to <br> tags
         message = message.replace(/\n/g, "<br>");
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
         message = message.replace(/<strong>\*\*(.+?)\*\*<\/strong>/g, "<strong>$1</strong>");
         message = message.replace(/###\s/g, "<h3>").replace(/(<br>)+/g, "<br>");
         return `<div>${message}</div>`;
-    }*/
+    }
 
     function renderMathMessage(rawMessage) {
         const tempDiv = document.createElement("div");
@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function() {
         MathJax.typesetPromise([tempDiv]).then(() => {
             const renderedMessage = tempDiv.innerHTML;
             const assistantMessageElement = document.createElement("div");
-            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${renderedMessage}`;
+            //assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${renderedMessage}`;
+            assistantMessageElement.innerHTML = `<span style="color: #8b4513; font-weight: bold;">Assistant:</span> ${formatAssistantMessage(renderedMessage)}`;
             assistantMessageElement.classList.add("assistant-message");
             outputArea.appendChild(assistantMessageElement);
             scrollToBottom();

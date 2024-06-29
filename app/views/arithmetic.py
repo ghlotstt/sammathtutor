@@ -69,6 +69,24 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
 
     answer = response.choices[0].message.content
     print("Response from OpenAI:", answer)  # Log para la respuesta recibida
+    
+    #conversation_history.append({"user": question, "assistant": answer})
+    
+    #return answer, conversation_history
+
+    # Añadir lógica para asegurar que no se da una respuesta directa
+    if any(keyword in answer.lower() for keyword in ["the answer is", "equals", "result is"]):
+        follow_up_prompt = """
+        Remember, your goal is to help the student find the answer themselves. Please rephrase your response as a guiding question or hint without giving the final answer directly.
+        """
+        messages.append({"role": "user", "content": follow_up_prompt})
+        response = await client.chat.completions.create(
+            model="gpt-4",
+            messages=messages
+        )
+        answer = response.choices[0].message.content
+        print("Follow-up response from OpenAI:", answer)  # Log para la respuesta de seguimiento
+    
     conversation_history.append({"user": question, "assistant": answer})
     
     return answer, conversation_history
