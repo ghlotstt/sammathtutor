@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@google-cloud/speech": "^6.6.1",
+    "dotenv": "^16.4.5",
+    "websocket": "^1.0.35",
+    "ws": "^8.17.1"
+  }
+}

@@ -229,3 +229,15 @@ body {
 @keyframes blinker {
     50% { opacity: 0; }
 }
+
+
+/* Estilo base del micrófono */
+#voice-icon {
+    cursor: pointer;
+    color: gray;
+}
+
+/* Estilo del micrófono cuando está activo */
+#voice-icon.active {
+    color: red;
+}
