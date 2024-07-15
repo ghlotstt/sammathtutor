@@ -234,7 +234,7 @@ body {
 /* Estilo base del micrófono */
 #voice-icon {
     cursor: pointer;
-    color: gray;
+    color: #007bff;
 }
 
 /* Estilo del micrófono cuando está activo */
