@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         stopRecognition(); // Detener el reconocimiento antes de enviar la solicitud
 
-        fetch("/ask_arithmetic", {
+        /*fetch("/ask_arithmetic", {
             method: "POST",
             body: formData
         })
@@ -317,6 +317,48 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         userInput.value = "";
+    }*/
+
+
+    
+
+    fetch("/ask_arithmetic", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Response Data:", data);
+            const assistantMessage = formatAssistantMessage(data.answer);
+            conversationHistory = data.conversation_history;
+
+            renderMathMessage(assistantMessage);
+
+            if (data.audio_file) {
+                console.log("Playing audio file:", data.audio_file);  // Verifica la URL del archivo de audio
+                playAudio(data.audio_file);
+            }
+
+            setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz después de un retraso
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz incluso si hay un error
+        });
+
+        userInput.value = "";
+    }
+
+
+    /*function playAudio(filename) {
+        const audio = new Audio(`/audio/${filename}`);
+        audio.play();
+    }*/
+
+    function playAudio(audioFilePath) {
+        console.log("Playing audio file:", audioFilePath);
+        const audio = new Audio(audioFilePath);
+        audio.play();
     }
 
     function formatAssistantMessage(message) {
