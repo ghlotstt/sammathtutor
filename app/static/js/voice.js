@@ -298,31 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         stopRecognition(); // Detener el reconocimiento antes de enviar la solicitud
 
-        /*fetch("/ask_arithmetic", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Response Data:", data);
-            const assistantMessage = formatAssistantMessage(data.answer);
-            conversationHistory = data.conversation_history;
-
-            renderMathMessage(assistantMessage);
-            setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz después de un retraso
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz incluso si hay un error
-        });
-
-        userInput.value = "";
-    }*/
-
-
-    
-
-    fetch("/ask_arithmetic", {
+        fetch("/ask_arithmetic", {
             method: "POST",
             body: formData
         })
@@ -335,11 +311,12 @@ document.addEventListener("DOMContentLoaded", function() {
             renderMathMessage(assistantMessage);
 
             if (data.audio_file) {
-                console.log("Playing audio file:", data.audio_file);  // Verifica la URL del archivo de audio
-                playAudio(data.audio_file);
+                const audioUrl = `${data.audio_file}?t=${new Date().getTime()}`;
+                console.log("Playing audio file:", audioUrl);  // Verifica la URL del archivo de audio
+                playAudio(audioUrl);
+            } else {
+                setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz después de un retraso
             }
-
-            setTimeout(startRecognition, 2000); // Reactivar el reconocimiento de voz después de un retraso
         })
         .catch(error => {
             console.error("Error:", error);
@@ -349,16 +326,14 @@ document.addEventListener("DOMContentLoaded", function() {
         userInput.value = "";
     }
 
-
-    /*function playAudio(filename) {
-        const audio = new Audio(`/audio/${filename}`);
-        audio.play();
-    }*/
-
     function playAudio(audioFilePath) {
-        console.log("Playing audio file:", audioFilePath);
+        stopRecognition(); // Asegúrate de detener el reconocimiento de voz antes de reproducir el audio
         const audio = new Audio(audioFilePath);
         audio.play();
+        audio.addEventListener('ended', function() {
+            console.log('Audio playback ended.');
+            setTimeout(startRecognition, 1000); // Reactivar el reconocimiento de voz después de un breve retraso
+        });
     }
 
     function formatAssistantMessage(message) {
@@ -409,6 +384,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+
 
 
 
