@@ -111,7 +111,7 @@ def describe_image(image_data):
     return description
 
 '''
-
+'''
 from flask import render_template, request, jsonify, send_file, current_app as app
 import asyncio
 from app.views.arithmetic import ask_gpt4_async
@@ -122,6 +122,20 @@ from werkzeug.utils import secure_filename
 import base64
 import requests
 from flask import send_file
+'''
+
+
+from flask import render_template, request, jsonify, send_file, current_app as app
+import asyncio
+from app.views.arithmetic import ask_gpt4_async
+import os
+import json
+from werkzeug.utils import secure_filename
+import base64
+import requests
+from pathlib import Path
+import shutil
+from app.views.voice_handler import generate_speech  # Importar la función generate_speech
 
 
 @app.route('/')
@@ -230,8 +244,8 @@ def describe_image(image_data):
     }
 
     payload = {
-        #"model": "gpt-4o",
-        "model": "gpt-4o-mini",
+        "model": "gpt-4o",
+        #"model": "gpt-4o-mini",
         
         "messages": [
             {

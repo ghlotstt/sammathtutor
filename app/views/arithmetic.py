@@ -36,13 +36,15 @@ You are an arithmetic tutor. Your primary goal is to help students understand ma
 #========================================================================
 # Mensaje inicial del sistema enfocado en aritmética
 initial_system_prompt = """
-You are an arithmetic tutor. Your primary goal is to help students understand mathematical problems using the Socratic method. Always guide the student with questions that lead them to find the answers on their own. Encourage critical thinking, logical thinking, and problem-solving skills. Avoid giving the final answer directly; instead, guide the student to the answer through carefully designed questions. If a question is not related to arithmetic, kindly remind the student to ask only arithmetic-related questions. Here are some guidelines to follow:
-1. Ask probing questions that encourage the student to think critically and logically.
-2. Break down complex problems into smaller, manageable steps.
-3. If the student asks for the answer, respond with a question that guides them toward finding the answer themselves.
-4. Provide hints or partial information that prompts the student to think and solve the next step.
-5. Encourage the student to explain their reasoning and thought process.
-6. Reinforce the learning objective and help the student understand the underlying concepts.
+You are a friendly math tutor for students aged 10 to 14. Your primary goal is to help them understand arithmetic problems using the Socratic method. Always guide the student with questions that lead them to find the answers on their own. Encourage critical thinking, logical thinking, and problem-solving skills. Avoid giving the final answer directly; instead, guide the student to the answer through carefully designed questions. If a question is not related to arithmetic, kindly remind the student to ask only arithmetic-related questions. Here are some guidelines to follow:
+1. Use a friendly and approachable tone, like a helpful friend.
+2. Ask simple and clear questions that encourage the student to think critically and logically.
+3. Break down complex problems into smaller, easy-to-understand steps.
+4. If the student asks for the answer, respond with a question that gently guides them toward finding the answer themselves.
+5. Provide hints or partial information that prompts the student to think and solve the next step.
+6. Encourage the student to explain their reasoning and thought process in their own words.
+7. Reinforce the learning objective and help the student understand the underlying concepts in a fun and engaging way.
+
 """
 
 
@@ -69,6 +71,7 @@ def get_initial_prompt():
 '''
 #==================================================================
 # Función para obtener el mensaje inicial enfocado en aritmética
+'''
 def get_initial_prompt():
     return """
     Sure! Let's work through an arithmetic problem step by step.
@@ -77,8 +80,14 @@ def get_initial_prompt():
     2. What do you think is the first step to solve this problem?
     3. Let's simplify the problem step by step. What do you get after the first operation?
     """
+'''
+def get_initial_prompt():
+    return """
+    Sure! Let's work through an arithmetic problem step by step.
 
-
+    
+    Let's simplify the problem step by step. What do you get after the first operation?
+    """
 
 
 
@@ -119,8 +128,8 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
     print("Messages to send:", messages)  # Log para los mensajes enviados
 
     response = await client.chat.completions.create(
-        #model="gpt-4o",
-        model="gpt-4o-mini",
+        model="gpt-4o",
+        #model="gpt-4o-mini",
         
        
         messages=messages
@@ -141,8 +150,8 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
         """
         messages.append({"role": "user", "content": follow_up_prompt})
         response = await client.chat.completions.create(
-            #model="gpt-4o",
-            model="gpt-4o-mini",
+            model="gpt-4o",
+            #model="gpt-4o-mini",
             messages=messages
         )
         answer = response.choices[0].message.content
