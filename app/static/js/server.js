@@ -1,6 +1,6 @@
 // server.js
 
-// Cargar las variables de entorno desde el archivo .env
+/*// Cargar las variables de entorno desde el archivo .env
 require('dotenv').config();
 
 const WebSocket = require('ws');
@@ -45,4 +45,36 @@ wss.on('connection', (ws) => {
     });
 });
 
-console.log('WebSocket server started on port 8080');
+console.log('WebSocket server started on port 8080');*/
+
+// server.js
+
+/*require('dotenv').config();
+const express = require('express');
+const multer = require('multer');
+const upload = multer();
+const { transcribeAudio } = require('./openai_stt_handler');
+
+const app = express();
+const port = 3000;
+
+// Ruta para transcribir audio usando la API de OpenAI STT
+app.post('/transcribe_audio', upload.single('audio'), async (req, res) => {
+    try {
+        const audioFile = req.file;
+        if (audioFile) {
+            const transcription = await transcribeAudio(audioFile.buffer);
+            res.json({ transcription });
+        } else {
+            res.status(400).json({ error: 'No audio file provided' });
+        }
+    } catch (error) {
+        console.error('Error during transcription:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+});*/
+

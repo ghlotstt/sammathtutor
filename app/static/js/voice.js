@@ -632,56 +632,28 @@ imageInput.addEventListener("change", function() {
     
 });*/
 
+//====================================================================
 
-
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     const voiceIcon = document.getElementById("voice-icon");
     const userInput = document.getElementById("user-input");
     const sendIcon = document.getElementById("send-icon");
     const outputArea = document.getElementById("output-area");
-    const fileInput = document.getElementById("file-input"); // Asegúrate de tener un input de tipo file con id="file-input"
-
-
-    if (!voiceIcon || !userInput || !sendIcon || !outputArea) {
-        console.error("Required DOM elements are missing");
-        return;
-    }
+    const imageInput = document.getElementById("image-input");
 
     let recognitionActive = false;
-    let socket;
     let recognition;
     let imageReady = false;
     let conversationHistory = [];
     let finalTranscript = '';
     let autoRestartRecognition = false;
-
-    function initializeWebSocket() {
-        if (!socket || socket.readyState === WebSocket.CLOSED) {
-            socket = new WebSocket('ws://localhost:8080');
-
-            socket.onopen = function() {
-                console.log('WebSocket connection established');
-            };
-
-            socket.onclose = function() {
-                console.log('WebSocket connection closed');
-            };
-
-            socket.onerror = function(error) {
-                console.error('WebSocket error:', error);
-            };
-
-            socket.onmessage = function(event) {
-                console.log('Received from server:', event.data);
-                userInput.value = event.data;
-            };
-        }
-    }
+    let mediaRecorder;
+    let audioChunks = [];
+    let mediaStream; // Declarar mediaStream
 
     function startRecognition() {
         if (!recognitionActive) {
-            initializeWebSocket();
-
+            console.log("Iniciando reconocimiento de voz...");
             recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'en-US';
             recognition.interimResults = false;
@@ -689,6 +661,7 @@ document.addEventListener("DOMContentLoaded", function() {
             recognition.onstart = function() {
                 console.log('Voice recognition started.');
                 voiceIcon.classList.add('active');
+                startRecording();
             };
 
             recognition.onresult = function(event) {
@@ -707,11 +680,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             };
 
-            recognition.onend = function() {
+            recognition.onend = async function() {
                 console.log('Voice recognition ended.');
                 voiceIcon.classList.remove('active');
                 if (recognitionActive) {
                     recognitionActive = false;
+                    try {
+                        const audioBlob = await getAudioBlob();
+                        if (audioBlob) {
+                            console.log("Sending audio blob for transcription...");
+                            sendAudioForTranscription(audioBlob);
+                        } else {
+                            console.log("No audio blob available.");
+                        }
+                    } catch (error) {
+                        console.error("Error obteniendo audio blob:", error);
+                    }
                     if (userInput.value.trim() !== "") {
                         setTimeout(sendMessage, 1000);
                     } else if (autoRestartRecognition) {
@@ -727,10 +711,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function stopRecognition() {
         if (recognitionActive) {
+            console.log("Stopping voice recognition...");
             recognitionActive = false;
             if (recognition) {
                 recognition.stop();
             }
+            stopRecording()
+                .then(() => console.log("Recording stopped successfully."))
+                .catch(error => console.error("Error stopping recording:", error));
         }
     }
 
@@ -748,6 +736,14 @@ document.addEventListener("DOMContentLoaded", function() {
         formData.append("question", userMessage);
         formData.append("type", "text");
         formData.append("conversation_history", JSON.stringify(conversationHistory));
+
+        if (imageReady) {
+            const imageFile = imageInput.files[0];
+            if (imageFile) {
+                formData.append("file", imageFile);
+                imageReady = false;
+            }
+        }
 
         stopRecognition();
 
@@ -778,36 +774,7 @@ document.addEventListener("DOMContentLoaded", function() {
         userInput.value = "";
     }
 
-    function sendImage(file) {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        fetch("/describe_image", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.description) {
-                userInput.value = `Image description: ${data.description}`;
-                sendMessage();
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
-    }
-
-    /*function playAudio(audioFilePath) {
-        stopRecognition();
-        const audio = new Audio(audioFilePath);
-        audio.play();
-        audio.addEventListener('ended', function() {
-            console.log('Audio playback ended.');
-            setTimeout(startRecognition, 1000);
-        });
-    }*/
-
+    
 
     function playAudio(audioFilePath) {
         stopRecognition(); // Asegúrate de detener el reconocimiento de voz antes de reproducir el audio
@@ -818,7 +785,6 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(startRecognition, 1000); // Reactivar el reconocimiento de voz después de un breve retraso
         });
     }
-    
 
     function formatAssistantMessage(message) {
         message = message.replace(/\n/g, "<br>");
@@ -849,28 +815,84 @@ document.addEventListener("DOMContentLoaded", function() {
 
     voiceIcon.addEventListener("click", function() {
         if (recognitionActive) {
-            autoRestartRecognition = false;
+            console.log("Stopping recognition and recording...");
             stopRecognition();
+            getAudioBlob().then(audioBlob => {
+                if (audioBlob) {
+                    console.log("Sending audio blob for transcription...");
+                    sendAudioForTranscription(audioBlob);
+                }
+            }).catch(error => console.error("Error obteniendo audio blob:", error));
         } else {
-            autoRestartRecognition = true;
+            console.log("Starting recognition and recording...");
             startRecognition();
         }
     });
 
-    userInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    });
+    if (imageInput) {
+        imageInput.addEventListener("change", function() {
+            imageReady = true;
+        });
+    }
 
-    fileInput.addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            sendImage(file);
-        }
-    });
+    function startRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                console.log("Iniciando grabación de audio...");
+                mediaStream = stream; // Asignar el flujo de medios
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                    console.log("Audio chunk disponible:", event.data);
+                };
+                mediaRecorder.start();
+            })
+            .catch(error => console.error('Error accessing microphone:', error));
+    }
 
-});
+    function stopRecording() {
+        return new Promise((resolve, reject) => {
+            if (!mediaRecorder) {
+                console.error("No recording in progress.");
+                reject('No recording in progress.');
+                return;
+            }
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                audioChunks = [];
+                console.log("Recording stopped. Audio blob available:", audioBlob);
+                resolve(audioBlob);
+            };
+            console.log("Stopping audio recording...");
+            mediaRecorder.stop();
+
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            
+        });
+    }
+
+    function getAudioBlob() {
+        return stopRecording();
+    }
+});*/
+
+//======================================================================
+
+
+//============================================================
+
+
+
+
+
+
+
+
+
+
 
 
 

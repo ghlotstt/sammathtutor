@@ -235,9 +235,16 @@ body {
 #voice-icon {
     cursor: pointer;
     color: #007bff;
+    font-size: 24px; /* Aumenta o disminuye según sea necesario */  
+    transition: color 0.3s;
 }
 
 /* Estilo del micrófono cuando está activo */
 #voice-icon.active {
     color: red;
+}
+
+
+.voice-icon:hover {
+    color: blue; /* Cambia el color al pasar el cursor por encima */
 }
