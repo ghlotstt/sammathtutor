@@ -229,3 +229,20 @@ body {
 @keyframes blinker {
     50% { opacity: 0; }
 }
+
+
+/* Estilo general para el icono del micrófono */
+#voice-icon {
+    font-size: 26px;
+    color: #555; /* Color gris oscuro para el estado inactivo */
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+/* Estilo para el estado activo (micrófono en uso) */
+#voice-icon.active {
+    color: red; /* Color rojo para el estado activo */
+}
+
+
+

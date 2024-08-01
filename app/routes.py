@@ -20,8 +20,23 @@ def mathematics():
 def arithmetic():
     return render_template('subjects/arithmetic.html')
 
+from app.views.audio_recorder import iniciar_grabacion_con_silencio
+
+@app.route('/start_recording', methods=['POST'])
+def start_recording():
+    try:
+        filename = iniciar_grabacion_con_silencio()
+        return jsonify({"filename": filename})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
+from app.views.stt import transcribe_audio
+
+@app.route('/transcribe_audio', methods=['POST'])
+def transcribe_audio_route():
+    return transcribe_audio()
+        
 
 @app.route('/ask_arithmetic', methods=['POST'])
 def ask_arithmetic():
