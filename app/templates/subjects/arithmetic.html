@@ -39,12 +39,6 @@
     
     <div class="chat-container">
         <div id="output-area" class="chat-box"></div>
-
-        <!--<div class="prompt-area">
-            <input type="text" id="user-input" placeholder="Type your message here...">
-            <button id="send-button">Send</button>
-        </div>-->
-
         <div class="prompt-area">
             <i id="attach-icon" class="fas fa-paperclip"></i>
             <input type="text" id="user-input" placeholder="Type your message here...">
@@ -57,8 +51,10 @@
     </div>
     <!--<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"type="module"></script>
     <script src="{{ url_for('static', filename='js/describe_image.js') }}"></script>
     <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stt_chat.js') }}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}" type="module"></script>
 </body>
 </html>
