@@ -125,3 +125,45 @@ def describe_image(image_data):
 
     return description
 
+
+from app.views.tts import generate_speech  # Asegúrate de que `tts.py` esté en el directorio correcto
+
+'''
+@app.route('/generate_speech', methods=['POST'])
+def generate_speech_route():
+    data = request.get_json()
+    text = data.get('text')
+    print(f"Received text for TTS: {text}")
+    if not text:
+        return jsonify(error="No text provided"), 400
+
+    audio_file = generate_speech(text)
+    if audio_file:
+        print(f"Generated audio file: {audio_file}")
+        return jsonify(audio_file=audio_file)
+    else:
+        print("Failed to generate audio")
+        return jsonify(error="Failed to generate speech"), 500
+    
+'''
+
+@app.route('/generate_speech', methods=['POST'])
+def generate_speech_route():
+    try:
+        data = request.get_json()
+        print(f"Received text for TTS: {data}")  # Verifica que los datos se reciban correctamente
+        text = data.get('text')
+        if not text:
+            print("No text provided")
+            return jsonify(error="No text provided"), 400
+
+        audio_file = generate_speech(text)
+        if audio_file:
+            print(f"Generated audio file: {audio_file}")
+            return jsonify(audio_file=audio_file)
+        else:
+            print("Failed to generate audio")
+            return jsonify(error="Failed to generate speech"), 500
+    except Exception as e:
+        print(f"Error in generate_speech_route: {e}")
+        return jsonify(error=str(e)), 500
