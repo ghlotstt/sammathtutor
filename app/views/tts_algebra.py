@@ -1,4 +1,4 @@
-# tts.py
+
 
 import openai
 import os
@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 import shutil
 from bs4 import BeautifulSoup  # Asegúrate de tener BeautifulSoup instalado: pip install beautifulsoup4
-
-load_dotenv()
 
 
 load_dotenv()
@@ -18,6 +16,7 @@ def clean_text(text):
     soup = BeautifulSoup(text, "html.parser")
     clean_text = soup.get_text()
 
+    '''
     # Reemplazar caracteres matemáticos con su versión de texto
     clean_text = clean_text.replace("×", "x")
     clean_text = clean_text.replace("=", " equals ")
@@ -27,17 +26,55 @@ def clean_text(text):
     clean_text = clean_text.replace("/", " divided by ")
     clean_text = clean_text.replace("²", " squared ")
     clean_text = clean_text.replace("³", " cubed ")
+    '''
 
+    replacements = {
+        "×": " times ",
+        "=": " equals ",
+        "+": " plus ",
+        "-": " minus ",
+        "*": " times ",
+        "/": " divided by ",
+        "²": " squared ",
+        "³": " cubed ",
+        "√": " square root of ",
+        "∑": " summation of ",
+        "∏": " product of ",
+        "**": "",  # Remove Markdown bold markers
+        "__": "",  # Remove Markdown italic markers
+        "*": "",   # Remove Markdown italic markers
+        "_": ""    # Remove Markdown italic markers
+        
+    }
+
+    for original, replacement in replacements.items():
+        clean_text = clean_text.replace(original, replacement)
+
+    # Reemplazar el guion solo en contextos matemáticos
+    clean_text = clean_text.replace(" - ", " minus ")
+    clean_text = clean_text.replace(" -", " minus ")
+    clean_text = clean_text.replace("- ", " minus ")
+
+    clean_text = clean_text.replace("×", "x")
+    clean_text = clean_text.replace("=", " equals ")
+    clean_text = clean_text.replace("+", " plus ")
+    clean_text = clean_text.replace("-", " minus ")
+    clean_text = clean_text.replace("*", " times ")
+    clean_text = clean_text.replace("/", " divided by ")
+    clean_text = clean_text.replace("²", " squared ")
+    clean_text = clean_text.replace("³", " cubed ")
+    
     return clean_text
 
-def generate_speech(text, filename="output.mp3"):
+
+def generate_speech_algebra(text, filename="output_algebra.mp3"):
     try:
         print("Generating speech...")
         print(f"Input text: {text}")
 
         cleaned_text = clean_text(text)
         print(f"Cleaned text: {cleaned_text}")
-
+        
         client = openai.OpenAI()
         response = client.audio.speech.create(
             model="tts-1",

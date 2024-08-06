@@ -1,4 +1,4 @@
-# tts.py
+
 
 import openai
 import os
@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 import shutil
 from bs4 import BeautifulSoup  # Asegúrate de tener BeautifulSoup instalado: pip install beautifulsoup4
-
-load_dotenv()
 
 
 load_dotenv()
@@ -30,14 +28,15 @@ def clean_text(text):
 
     return clean_text
 
-def generate_speech(text, filename="output.mp3"):
+
+def generate_speech_geometry(text, filename="output_geometry.mp3"):
     try:
         print("Generating speech...")
         print(f"Input text: {text}")
 
         cleaned_text = clean_text(text)
         print(f"Cleaned text: {cleaned_text}")
-
+        
         client = openai.OpenAI()
         response = client.audio.speech.create(
             model="tts-1",

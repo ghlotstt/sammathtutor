@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => scrollToBottom(outputArea), 100);
         }
 
-        fetch("/ask_arithmetic", {
+        fetch("/ask_geometry", {
             method: "POST",
             body: formData
         })

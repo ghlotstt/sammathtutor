@@ -1,5 +1,5 @@
 
-import { scrollToBottom, formatAssistantMessage } from './utils.js';
+import { scrollToBottom, formatAssistantMessage } from './utils_algebra.js';
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log("chat.js loaded");
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function generateAndPlayAudio(text) {
         console.log(`generateAndPlayAudio called with text: ${text}`); // Log para verificar que se llama la función
-        fetch('/generate_speech', {
+        fetch('/generate_speech_algebra', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => scrollToBottom(outputArea), 100);
         }
 
-        fetch("/ask_arithmetic", {
+        fetch("/ask_algebra", {
             method: "POST",
             body: formData
         })

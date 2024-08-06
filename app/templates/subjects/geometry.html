@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arithmetic Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/arithmetic.css') }}">
+    <title>Geometry Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/geometry.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!--<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body::before {
             content: "";
-            background-image: url('{{ url_for('static', filename='images/arithmetic_background_10.png') }}');
+            background-image: url('{{ url_for('static', filename='images/geometry.png') }}');
             background-size: 100%;
             background-position: top center;
             background-repeat: no-repeat;
-            opacity: 0.25;
+            opacity: 0.3;
             position: absolute;
             top: 0;
             left: 0;
@@ -28,23 +27,12 @@
 </head>
 <body>
     <div class="nav">
-        <!--<a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('mathematics') }}">Mathematics</a>
-        <a href="{{ url_for('arithmetic') }}">Arithmetic</a>
-        <a href="#">Algebra</a>
-        <a href="#">Geometry</a>
-        <a href="#">Trigonometry</a>
-        <a href="#">Calculus</a>-->
-
         <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
         <a href="{{ url_for('mathematics') }}" class="{% if request.endpoint == 'mathematics' %}active{% endif %}">Mathematics</a>
         <a href="{{ url_for('arithmetic') }}" class="{% if request.endpoint == 'arithmetic' %}active{% endif %}">Arithmetic</a>
         <a href="{{ url_for('algebra') }}" class="{% if request.endpoint == 'algebra' %}active{% endif %}">Algebra</a>
-        
         <a href="{{ url_for('geometry') }}" class="{% if request.endpoint == 'geometry' %}active{% endif %}">Geometry</a>
-        
         <a href="{{ url_for('trigonometry') }}" class="{% if request.endpoint == 'trigonometry' %}active{% endif %}">Trigonometry</a>
-        
         <a href="{{ url_for('calculus') }}" class="{% if request.endpoint == 'calculus' %}active{% endif %}">Calculus</a>
     </div>
     
@@ -58,18 +46,17 @@
             <i id="send-icon" class="fas fa-paper-plane"></i>
             <i id="voice-icon" class="fas fa-microphone"></i>
         </div>
-
     </div>
-    <!--<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/marked.min.js"></script>-->
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chat.js') }}"type="module"></script>
+    <script src="{{ url_for('static', filename='js/chat_geometry.js') }}" type="module"></script>
     <script src="{{ url_for('static', filename='js/describe_image.js') }}"></script>
     <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/stt_chat.js') }}" type="module"></script>
+    <!--<script src="{{ url_for('static', filename='js/stt_geometry.js') }}" type="module"></script>-->
     <script src="{{ url_for('static', filename='js/utils.js') }}" type="module"></script>
 </body>
-
 <footer>
     <p>&copy; 2024 SamMathTutor. All rights reserved.</p>
 </footer>
+
 </html>
