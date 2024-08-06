@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculus Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculus.css') }}">
+    <title>Trigonometry Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trigonometry.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body::before {
             content: "";
-            background-image: url('{{ url_for('static', filename='images/calculus.png') }}');
+            background-image: url('{{ url_for('static', filename='images/trigonometry.png') }}');
             background-size: 100%;
             background-position: top center;
             background-repeat: no-repeat;
@@ -49,7 +49,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ url_for('static', filename='js/chat_calculus.js') }}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/chat_trigonometry.js') }}" type="module"></script>
     <script src="{{ url_for('static', filename='js/describe_image.js') }}"></script>
     <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
     <!--<script src="{{ url_for('static', filename='js/stt_geometry.js') }}" type="module"></script>-->

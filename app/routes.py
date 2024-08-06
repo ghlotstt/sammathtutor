@@ -2,7 +2,9 @@ from flask import render_template, request, jsonify, current_app as app
 import asyncio
 from app.views.arithmetic import ask_gpt4_async
 from app.views.algebra import ask_gpt4_algebra_async
-from app.views.geometry import ask_gpt4_geometry_async  
+from app.views.geometry import ask_gpt4_geometry_async
+from app.views.trigonometry import ask_gpt4_trigonometry_async 
+from app.views.calculus import ask_gpt4_calculus_async   
 import os
 import json
 from werkzeug.utils import secure_filename
@@ -12,10 +14,14 @@ import requests
 from app.views.stt import transcribe_audio
 from app.views.stt_algebra import transcribe_audio_algebra
 from app.views.stt_geometry import transcribe_audio_geometry
+from app.views.stt_trigonometry import transcribe_audio_trigonometry
+from app.views.stt_calculus import transcribe_audio_calculus
 
 from app.views.tts import generate_speech  # Asegúrate de que `tts.py` esté en el directorio correcto
 from app.views.tts_algebra import generate_speech_algebra  # Asegúrate de que `tts.py` esté en el directorio correcto
 from app.views.tts_geometry import generate_speech_geometry  # Asegúrate de que `tts.py` esté en el directorio correcto
+from app.views.tts_trigonometry import generate_speech_trigonometry  # Asegúrate de que `tts.py` esté en el directorio correcto
+from app.views.tts_calculus import generate_speech_calculus  # Asegúrate de que `tts.py` esté en el directorio correcto
 
 
 @app.route('/')
@@ -58,6 +64,14 @@ def transcribe_audio_algebra_route():
 @app.route('/transcribe_audio_geometry', methods=['POST'])
 def transcribe_audio_geometry_route():
     return transcribe_audio_geometry()
+
+@app.route('/transcribe_audio_trigonometry', methods=['POST'])
+def transcribe_audio_trigonometry_route():
+    return transcribe_audio_trigonometry()
+
+@app.route('/transcribe_audio_calculus', methods=['POST'])
+def transcribe_audio_calculus_route():
+    return transcribe_audio_calculus()
 
 @app.route('/ask_arithmetic', methods=['POST'])
 def ask_arithmetic():
@@ -148,6 +162,69 @@ def ask_geometry():
     answer, conversation_history = loop.run_until_complete(ask_gpt4_geometry_async(question, conversation_history, image_description))
     
     return jsonify({"answer": answer, "conversation_history": conversation_history})
+
+
+
+
+@app.route('/ask_trigonometry', methods=['POST'])
+def ask_trigonometry():
+    data = request.form
+    question = data.get("question")
+    conversation_history = data.get("conversation_history")
+    if conversation_history:
+        conversation_history = json.loads(conversation_history)
+    else:
+        conversation_history = []
+
+    file = request.files.get("file")
+    image_description = None
+
+    if file:
+        image_data = file.read()
+        print(f"Received file: {file.filename}, size: {len(image_data)} bytes")
+        
+        # Llamar al modelo de AI para que describa la imagen
+        image_description = describe_image(image_data)
+
+    print("Received question:", question)
+    print("Conversation history:", conversation_history)
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    answer, conversation_history = loop.run_until_complete(ask_gpt4_trigonometry_async(question, conversation_history, image_description))
+    
+    return jsonify({"answer": answer, "conversation_history": conversation_history})
+
+
+@app.route('/ask_calculus', methods=['POST'])
+def ask_calculus():
+    data = request.form
+    question = data.get("question")
+    conversation_history = data.get("conversation_history")
+    if conversation_history:
+        conversation_history = json.loads(conversation_history)
+    else:
+        conversation_history = []
+
+    file = request.files.get("file")
+    image_description = None
+
+    if file:
+        image_data = file.read()
+        print(f"Received file: {file.filename}, size: {len(image_data)} bytes")
+        
+        # Llamar al modelo de AI para que describa la imagen
+        image_description = describe_image(image_data)
+
+    print("Received question:", question)
+    print("Conversation history:", conversation_history)
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    answer, conversation_history = loop.run_until_complete(ask_gpt4_calculus_async(question, conversation_history, image_description))
+    
+    return jsonify({"answer": answer, "conversation_history": conversation_history})
+
 
 
 
@@ -278,4 +355,49 @@ def generate_speech_geometry_route():
             return jsonify(error="Failed to generate speech"), 500
     except Exception as e:
         print(f"Error in generate_speech_geometry_route: {e}")
+        return jsonify(error=str(e)), 500
+    
+
+
+@app.route('/generate_speech_trigonometry', methods=['POST'])
+def generate_speech_trigonometry_route():
+    try:
+        data = request.get_json()
+        print(f"Received text for TTS: {data}")  # Verifica que los datos se reciban correctamente
+        text = data.get('text')
+        if not text:
+            print("No text provided")
+            return jsonify(error="No text provided"), 400
+
+        audio_file = generate_speech_trigonometry(text)
+        if audio_file:
+            print(f"Generated audio file: {audio_file}")
+            return jsonify(audio_file=audio_file)
+        else:
+            print("Failed to generate audio")
+            return jsonify(error="Failed to generate speech"), 500
+    except Exception as e:
+        print(f"Error in generate_speech_trigonometry_route: {e}")
+        return jsonify(error=str(e)), 500
+    
+
+@app.route('/generate_speech_calculus', methods=['POST'])
+def generate_speech_calculus_route():
+    try:
+        data = request.get_json()
+        print(f"Received text for TTS: {data}")  # Verifica que los datos se reciban correctamente
+        text = data.get('text')
+        if not text:
+            print("No text provided")
+            return jsonify(error="No text provided"), 400
+
+        audio_file = generate_speech_calculus(text)
+        if audio_file:
+            print(f"Generated audio file: {audio_file}")
+            return jsonify(audio_file=audio_file)
+        else:
+            print("Failed to generate audio")
+            return jsonify(error="Failed to generate speech"), 500
+    except Exception as e:
+        print(f"Error in generate_speech_calculus_route: {e}")
         return jsonify(error=str(e)), 500
