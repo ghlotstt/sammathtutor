@@ -5,32 +5,26 @@
 {% endblock %}
 
 {% block content %}
-<!--<h2>Mathematics</h2>
-<p>Explore various topics in Mathematics from basic arithmetic to advanced calculus.</p>-->
 <div class="topics">
     <div class="topic">
         <img src="{{ url_for('static', filename='images/arithmetic.jpg') }}" alt="Arithmetic">
-        <!--<a href="#">Arithmetic</a>-->
         <a href="{{ url_for('arithmetic') }}">Arithmetic</a>
-
     </div>
     <div class="topic">
         <img src="{{ url_for('static', filename='images/algebra.jpg') }}" alt="Algebra">
-        <a href="#">Algebra</a>
+        <a href="{{ url_for('algebra') }}">Algebra</a>
     </div>
     <div class="topic">
         <img src="{{ url_for('static', filename='images/geometry.jpg') }}" alt="Geometry">
-        <a href="#">Geometry</a>
+        <a href="{{ url_for('geometry') }}">Geometry</a>
     </div>
     <div class="topic">
         <img src="{{ url_for('static', filename='images/trigonometry.jpg') }}" alt="Trigonometry">
-        <a href="#">Trigonometry</a>
+        <a href="{{ url_for('trigonometry') }}">Trigonometry</a>
     </div>
     <div class="topic">
         <img src="{{ url_for('static', filename='images/calculus.jpg') }}" alt="Calculus">
-        <a href="#">Calculus</a>
+        <a href="{{ url_for('calculus') }}">Calculus</a>
     </div>
 </div>
 {% endblock %}
-
-

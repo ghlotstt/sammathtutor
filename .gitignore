@@ -10,3 +10,49 @@ instance/
 *.log
 *.pot
 node_modules/
+
+# Entornos virtuales
+venv/
+env/
+
+# Archivos de configuración de entorno
+.env
+
+# Archivos generados por Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pot
+
+# Archivos generados por Node.js
+node_modules/
+
+# Archivos de caché de Webpack o cualquier otro paquete de activos
+.webassets-cache
+
+# Archivos de datos y salidas generadas
+*.csv
+*.tsv
+*.mp4
+*.mp3
+app/static/audio/output.mp3
+
+# Archivos de imágenes generadas
+app/static/images/generated/
+
+# Configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de desarrollo
+*.bak
+*.swp
+*.swo
