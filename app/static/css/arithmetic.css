@@ -249,21 +249,45 @@ body {
     50% { opacity: 0; }
 }
 
-
-/* Estilo base del micrófono */
+/* Estilo general para el icono del micrófono */
 #voice-icon {
+    font-size: 26px;
+    color: #555; /* Color gris oscuro para el estado inactivo */
     cursor: pointer;
-    color: #007bff;
-    font-size: 24px; /* Aumenta o disminuye según sea necesario */  
     transition: color 0.3s;
 }
 
-/* Estilo del micrófono cuando está activo */
+/* Estilo para el estado activo (micrófono en uso) */
 #voice-icon.active {
-    color: red;
+    color: red; /* Color rojo para el estado activo */
 }
 
+.nav a.active {
+    background-color: #ffcc00; /* Color de fondo para el enlace activo */
+    color: #000; /* Color del texto para el enlace activo */
+    border-radius: 5px;
+}
 
-.voice-icon:hover {
-    color: blue; /* Cambia el color al pasar el cursor por encima */
+/* Estilo para el pie de página */
+footer {
+    background-color: #f8f9fa; /* Color de fondo claro */
+    color: #343a40; /* Color de texto oscuro */
+    padding: 20px 0; /* Espaciado vertical */
+    text-align: center; /* Centrado del texto */
+    font-size: 1em; /* Tamaño de la fuente */
+    border-top: 1px solid #dee2e6; /* Borde superior sutil */
+    position: fixed; /* Fijar el pie de página */
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0; /* Quitar márgenes */
+    font-family: 'Arial', sans-serif; /* Fuente simple y legible */
+    letter-spacing: 1px; /* Espaciado de letras */
+}
+
+/* Opcional: cambiar el color del texto al pasar el ratón */
+footer p:hover {
+    color: #007bff; /* Cambiar a color azul al pasar el ratón */
 }

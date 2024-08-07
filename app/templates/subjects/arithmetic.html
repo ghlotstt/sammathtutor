@@ -38,6 +38,7 @@
 
         <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a>
         <a href="{{ url_for('mathematics') }}" class="{% if request.endpoint == 'mathematics' %}active{% endif %}">Mathematics</a>
+        <a href="{{ url_for('math') }}" class="{% if request.endpoint == 'math' %}active{% endif %}">Math</a>
         <a href="{{ url_for('arithmetic') }}" class="{% if request.endpoint == 'arithmetic' %}active{% endif %}">Arithmetic</a>
         <a href="{{ url_for('algebra') }}" class="{% if request.endpoint == 'algebra' %}active{% endif %}">Algebra</a>
         
@@ -68,9 +69,9 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ url_for('static', filename='js/chat.js') }}"type="module"></script>
     <script src="{{ url_for('static', filename='js/describe_image.js') }}"></script>
-    <!--<script src="{{ url_for('static', filename='js/voice.js') }}"></script>-->
-    <!--<script src="{{ url_for('static', filename='js/openai_stt.js') }}"></script>-->
-    <script src="{{ url_for('static', filename='js/stt.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stt_chat.js') }}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/utils.js') }}" type="module"></script>
 
 
 </body>
