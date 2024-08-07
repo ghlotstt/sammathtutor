@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function generateAndPlayAudio(text) {
         console.log(`generateAndPlayAudio called with text: ${text}`); // Log para verificar que se llama la función
-        fetch('/generate_speech', {
+        fetch('/generate_speech_geometry', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

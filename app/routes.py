@@ -337,7 +337,7 @@ def describe_image(image_data):
 
     return description
 
-@app.route('/generate_speech', methods=['POST'])
+@app.route('/generate_speech_math', methods=['POST'])
 def generate_speech_math_route():
     try:
         data = request.get_json()
@@ -355,7 +355,7 @@ def generate_speech_math_route():
             print("Failed to generate audio")
             return jsonify(error="Failed to generate speech"), 500
     except Exception as e:
-        print(f"Error in generate_speech_route: {e}")
+        print(f"Error in generate_speech_math_route: {e}")
         return jsonify(error=str(e)), 500
     
 

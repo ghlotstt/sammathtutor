@@ -2,7 +2,7 @@
 import { scrollToBottom, formatAssistantMessage } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("chat.js loaded");
+    console.log("chat_math.js loaded");
     const sendIcon = document.getElementById("send-icon");
     const userInput = document.getElementById("user-input");
     const outputArea = document.getElementById("output-area");
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function generateAndPlayAudio(text) {
         console.log(`generateAndPlayAudio called with text: ${text}`); // Log para verificar que se llama la función
-        fetch('/generate_speech', {
+        fetch('/generate_speech_math', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
