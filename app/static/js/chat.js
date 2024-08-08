@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function sendMessage(message) {
+    /*function sendMessage(message) {
         console.log("Sending message:", message);
         const userMessage = message || userInput.value;
         console.log("User message:", userMessage);
@@ -150,13 +150,95 @@ document.addEventListener("DOMContentLoaded", function() {
 
         userInput.value = "";
         sendIcon.classList.remove("blink");
+    }*/
+
+    function sendMessage(message) {
+        console.log("Sending message:", message);
+        const userMessage = message || userInput.value;
+        console.log("User message:", userMessage);
+    
+        if (userMessage.trim() === "" && fileInput.files.length === 0 && !imageReady) {
+            console.log("Empty message, nothing to send.");
+            return;
+        }
+    
+        const formData = new FormData();
+        let isImage = false;
+    
+        if (imageReady) {
+            const file = fileInput.files[0];
+            formData.append("file", file);
+            formData.append("type", "image");
+            formData.append("question", userMessage);
+            formData.append("conversation_history", JSON.stringify(conversationHistory));
+            isImage = true;
+            imageReady = false;
+        } else {
+            formData.append("question", userMessage);
+            formData.append("type", "text");
+            formData.append("conversation_history", JSON.stringify(conversationHistory));
+    
+            const messageElement = document.createElement("div");
+            messageElement.innerHTML = `<span style="color: #007bff; font-weight: bold;">User:</span> ${userMessage}`;
+            messageElement.classList.add("user-message");
+            outputArea.appendChild(messageElement);
+            setTimeout(() => scrollToBottom(outputArea), 100);
+        }
+    
+        fetch("/ask_arithmetic", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Response Data:", data);
+            const assistantMessage = data.answer;
+            conversationHistory = data.conversation_history;
+    
+            // Verificar que los valores estén presentes en los datos
+            console.log("Question Token Count:", data.question_token_count);
+            console.log("Answer Token Count:", data.response_token_count);
+            console.log("Total Token Count Before Sending:", data.total_token_count_before);
+            console.log("Total Token Count:", data.total_token_count);
+    
+            renderMathMessage(assistantMessage);
+    
+            // Mostrar los conteos de tokens en la interfaz
+            const tokenInfo = document.createElement("div");
+            tokenInfo.innerHTML = `
+                <span style="color: #28a745; font-weight: bold;">Token Count:</span>
+                <br><span style="color: #17a2b8;">Question Tokens:</span> ${data.question_token_count}
+                <br><span style="color: #17a2b8;">Answer Tokens:</span> ${data.response_token_count}
+                <br><span style="color: #17a2b8;">Total Token Count Before Sending:</span> ${data.total_token_count_before}
+                <br><span style="color: #17a2b8;">Total Token Count:</span> ${data.total_token_count}
+            `;
+            tokenInfo.classList.add("token-info");
+            outputArea.appendChild(tokenInfo);
+            setTimeout(() => scrollToBottom(outputArea), 100);
+    
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+                loadingIndicator = null;
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+                loadingIndicator = null;
+            }
+        });
+    
+        userInput.value = "";
+        sendIcon.classList.remove("blink");
     }
-
+    
     window.sendMessage = sendMessage;
-
+    
     attachIcon.addEventListener("click", function() {
         fileInput.click();
     });
+    
 
     fileInput.addEventListener("change", function() {
         if (fileInput.files.length > 0) {

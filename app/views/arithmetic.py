@@ -93,7 +93,7 @@ def get_initial_prompt():
 
 
 
-
+'''
 # Función para manejar las preguntas y respuestas
 async def ask_gpt4_async(question, conversation_history, image_description=None):
     print("ask_gpt4_async called with question:", question)  # Log para la pregunta recibida
@@ -129,9 +129,13 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
 
     print("Messages to send:", messages)  # Log para los mensajes enviados
 
+    # Contar los tokens de todos los mensajes
+    total_token_count = sum(count_tokens(message["content"]) for message in messages)
+    print(f"Total token count before sending: {total_token_count}")
+
     response = await client.chat.completions.create(
-        model="gpt-4o",
-        #model="gpt-4o-mini",
+        #model="gpt-4o",
+        model="gpt-4o-mini",
         
        
         messages=messages
@@ -156,10 +160,11 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
         """
         messages.append({"role": "user", "content": follow_up_prompt})
         response = await client.chat.completions.create(
-            model="gpt-4o",
-            #model="gpt-4o-mini",
+            #model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages
         )
+        
         answer = response.choices[0].message.content
         print("Follow-up response from OpenAI:", answer)  # Log para la respuesta de seguimiento
 
@@ -172,7 +177,86 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
     
     return answer, conversation_history
 
-   
+'''
 
 
-    
+async def ask_gpt4_async(question, conversation_history, image_description=None):
+    try:
+        print("ask_gpt4_async called with question:", question)  # Log para la pregunta recibida
+
+        if image_description:
+            question = f"Image description: {image_description}. {question}"
+
+        initial_prompt = get_initial_prompt()
+        print("Initial prompt:", initial_prompt)  # Log para el mensaje inicial
+
+        messages = [
+            {
+                "role": "system",
+                "content": initial_system_prompt
+            },
+            {
+                "role": "assistant",
+                "content": initial_prompt
+            }
+        ]
+
+        for entry in conversation_history:
+            if "user" in entry:
+                messages.append({"role": "user", "content": entry["user"]})
+            if "assistant" in entry:
+                messages.append({"role": "assistant", "content": entry["assistant"]})
+        messages.append({"role": "user", "content": question})
+
+        # Añadir recordatorio interno al mensaje del sistema
+        internal_reminder = "Remember to guide the student through critical thinking without giving the final answer. Ask guiding questions and break down the problem into smaller steps."
+        messages.append({"role": "system", "content": internal_reminder})
+
+        print("Messages to send:", messages)  # Log para los mensajes enviados
+
+        # Contar los tokens de todos los mensajes
+        total_token_count_before = sum(count_tokens(message["content"]) for message in messages)
+        print(f"Total token count before sending: {total_token_count_before}")
+
+        response = await client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages
+        )
+
+        answer = response.choices[0].message.content
+        print("Response from OpenAI:", answer)  # Log para la respuesta recibida
+
+        # Contar los tokens en la respuesta
+        response_token_count = count_tokens(answer)
+        total_token_count = total_token_count_before + response_token_count
+        print(f"Response token count: {response_token_count}")
+        print(f"Total token count after receiving: {total_token_count}")
+
+        # Verificar si la respuesta da la solución directa y reformular si es necesario
+        if any(keyword in answer.lower() for keyword in ["the answer is", "equals", "result is", "final answer", "therefore", "so the answer is"]):
+            follow_up_prompt = """
+            Please rephrase your response as a guiding question or hint without giving the final answer directly. 
+            Use the Socratic method to ask probing questions that encourage the student to think critically.
+            """
+            messages.append({"role": "user", "content": follow_up_prompt})
+            response = await client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages
+            )
+            answer = response.choices[0].message.content
+            print("Follow-up response from OpenAI:", answer)  # Log para la respuesta de seguimiento
+
+            # Contar los tokens en la respuesta de seguimiento
+            follow_up_response_token_count = count_tokens(answer)
+            total_token_count += follow_up_response_token_count
+            print(f"Follow-up response token count: {follow_up_response_token_count}")
+            print(f"Total token count after follow-up: {total_token_count}")
+
+        conversation_history.append({"user": question, "assistant": answer})
+
+        # Asegúrate de devolver los valores correctos
+        return answer, conversation_history, total_token_count_before, response_token_count
+
+    except Exception as e:
+        print(f"Error in ask_gpt4_async: {e}")
+        return None, None, None, None  # Asegúrate de que siempre se devuelve un tuple, incluso en caso de error

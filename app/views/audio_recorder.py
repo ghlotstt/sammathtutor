@@ -1,4 +1,4 @@
-
+'''
 import sounddevice as sd
 import numpy as np
 import wavio
@@ -39,6 +39,8 @@ def iniciar_grabacion_con_silencio(duracion_maxima=30, frecuencia=44100, umbral=
         return filename
 
 # app/views/audio_recorder.py
+
+'''
 '''
 import sounddevice as sd
 import numpy as np

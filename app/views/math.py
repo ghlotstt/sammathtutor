@@ -79,7 +79,8 @@ async def ask_gpt4_math_async(question, conversation_history, image_description=
     print("Messages to send:", messages)  # Log para los mensajes enviados
 
     response = await client.chat.completions.create(
-        model="gpt-4o",
+        #model="gpt-4o",
+        model="gpt-4o-mini",
        
         messages=messages
     )
@@ -99,7 +100,8 @@ async def ask_gpt4_math_async(question, conversation_history, image_description=
         """
         messages.append({"role": "user", "content": follow_up_prompt})
         response = await client.chat.completions.create(
-            model="gpt-4o",
+            #model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages
         )
         answer = response.choices[0].message.content
