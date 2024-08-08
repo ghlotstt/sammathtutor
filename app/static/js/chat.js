@@ -118,6 +118,23 @@ document.addEventListener("DOMContentLoaded", function() {
             conversationHistory = data.conversation_history;
             renderMathMessage(assistantMessage);
 
+            //=====Implementation count tokens =========================
+
+
+            // Mostrar los conteos de tokens en la interfaz
+            const tokenInfo = document.createElement("div");
+            tokenInfo.innerHTML = `
+                <span style="color: #28a745; font-weight: bold;">Token Count:</span>
+                <br><span style="color: #17a2b8;">Question Tokens:</span> ${data.question_token_count}
+                <br><span style="color: #17a2b8;">Answer Tokens:</span> ${data.answer_token_count}
+            `;
+            tokenInfo.classList.add("token-info");
+            outputArea.appendChild(tokenInfo);
+            setTimeout(() => scrollToBottom(outputArea), 100);
+
+            //===========================================================
+
+            
             if (loadingIndicator) {
                 loadingIndicator.remove();
                 loadingIndicator = null;

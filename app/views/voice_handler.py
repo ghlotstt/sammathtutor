@@ -53,7 +53,7 @@ def generate_speech(text, filename="output.mp3"):
 
 '''
 
-
+'''
 import openai
 import os
 from dotenv import load_dotenv
@@ -82,3 +82,4 @@ def generate_speech(text, filename="output.mp3"):
     shutil.move(speech_file_path, final_audio_path)
     
     return final_audio_path.name  # Devuelve solo el nombre del archivo
+'''

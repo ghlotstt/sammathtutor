@@ -31,6 +31,11 @@ from app.views.tts_geometry import generate_speech_geometry  # Asegúrate de que
 from app.views.tts_trigonometry import generate_speech_trigonometry  # Asegúrate de que `tts.py` esté en el directorio correcto
 from app.views.tts_calculus import generate_speech_calculus  # Asegúrate de que `tts.py` esté en el directorio correcto
 
+from app.views.token_utils import count_tokens  # Importar la función de conteo de tokens
+
+
+
+#from app.token_logger import calculate_cost
 
 @app.route('/')
 @app.route('/index')
@@ -94,6 +99,7 @@ def transcribe_audio_calculus_route():
     return transcribe_audio_calculus()
 '''
 
+
 @app.route('/ask_math', methods=['POST'])
 def ask_math():
     data = request.form
@@ -122,7 +128,7 @@ def ask_math():
     answer, conversation_history = loop.run_until_complete(ask_gpt4_math_async(question, conversation_history, image_description))
     
     return jsonify({"answer": answer, "conversation_history": conversation_history})
-
+'''
 @app.route('/ask_arithmetic', methods=['POST'])
 def ask_arithmetic():
     data = request.form
@@ -146,11 +152,71 @@ def ask_arithmetic():
     print("Received question:", question)
     print("Conversation history:", conversation_history)
 
+    # Contar los tokens de la pregunta del usuario
+    question_token_count = count_tokens(question)
+    print(f"Question token count: {question_token_count}")
+
+    
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     answer, conversation_history = loop.run_until_complete(ask_gpt4_async(question, conversation_history, image_description))
     
-    return jsonify({"answer": answer, "conversation_history": conversation_history})
+    
+    # Contar los tokens en la respuesta
+    token_count = count_tokens(answer)
+
+    #return jsonify({"answer": answer, "conversation_history": conversation_history})
+
+    return jsonify({"answer": answer, "conversation_history": conversation_history, "token_count": token_count})
+
+'''    
+@app.route('/ask_arithmetic', methods=['POST'])
+def ask_arithmetic():
+    try:
+        data = request.form
+        question = data.get("question")
+        conversation_history = data.get("conversation_history")
+        if conversation_history:
+            conversation_history = json.loads(conversation_history)
+        else:
+            conversation_history = []
+
+        file = request.files.get("file")
+        image_description = None
+
+        if file:
+            image_data = file.read()
+            print(f"Received file: {file.filename}, size: {len(image_data)} bytes")
+            image_description = describe_image(image_data)
+
+        print("Received question:", question)
+        print("Conversation history:", conversation_history)
+
+        # Contar los tokens de la pregunta del usuario
+        question_token_count = count_tokens(question)
+        print(f"Question token count: {question_token_count}")
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        answer, conversation_history = loop.run_until_complete(ask_gpt4_async(question, conversation_history, image_description))
+
+        # Contar los tokens en la respuesta
+        answer_token_count = count_tokens(answer)
+        print(f"Answer token count: {answer_token_count}")
+
+        response = {
+            "answer": answer,
+            "conversation_history": conversation_history,
+            "question_token_count": question_token_count,
+            "answer_token_count": answer_token_count
+        }
+        print(f"Response: {response}")
+        return jsonify(response)
+    except Exception as e:
+        print(f"Error in ask_arithmetic: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 #============ Algebra==============================
 

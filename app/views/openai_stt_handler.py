@@ -221,7 +221,7 @@ async def transcribe_audio(audio_data):
 '''
 #================================================
 
-
+'''
 import openai
 import os
 import tempfile
@@ -269,3 +269,4 @@ async def transcribe_audio(audio_data):
         print(f"Temp file {temp_audio_file_path} deleted.")
 
     return transcription
+'''

@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 import shutil
 from bs4 import BeautifulSoup  # Asegúrate de tener BeautifulSoup instalado: pip install beautifulsoup4
+from .token_utils import count_tokens  # Importar la función de conteo de tokens
+
 
 load_dotenv()
 
@@ -37,6 +39,14 @@ def generate_speech(text, filename="output.mp3"):
 
         cleaned_text = clean_text(text)
         print(f"Cleaned text: {cleaned_text}")
+
+        #===================================================
+
+        # Contar los tokens del texto limpio
+        token_count = count_tokens(cleaned_text)
+        print(f"Token count: {token_count}")
+
+        #====================================================
 
         client = openai.OpenAI()
         response = client.audio.speech.create(

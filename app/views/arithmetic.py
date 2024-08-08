@@ -1,9 +1,11 @@
+
 import openai
 import os
 from dotenv import load_dotenv
 import asyncio
 import nest_asyncio
 from openai import AsyncOpenAI
+from .token_utils import count_tokens  # Importar la función de conteo de tokens
 
 
 # Aplicar nest_asyncio
@@ -138,6 +140,10 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
     answer = response.choices[0].message.content
     print("Response from OpenAI:", answer)  # Log para la respuesta recibida
     
+
+    # Contar los tokens en la respuesta
+    token_count = count_tokens(answer)
+    print(f"Token count: {token_count}")
     #conversation_history.append({"user": question, "assistant": answer})
     
     #return answer, conversation_history
@@ -157,7 +163,11 @@ async def ask_gpt4_async(question, conversation_history, image_description=None)
         answer = response.choices[0].message.content
         print("Follow-up response from OpenAI:", answer)  # Log para la respuesta de seguimiento
 
-    
+        # Contar los tokens en la respuesta
+        token_count = count_tokens(answer)
+        print(f"Token count: {token_count}")
+        
+
     conversation_history.append({"user": question, "assistant": answer})
     
     return answer, conversation_history
