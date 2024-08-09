@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <br><span style="color: #17a2b8;">Answer Tokens:</span> ${data.response_token_count}
                 <br><span style="color: #17a2b8;">Total Token Count Before Sending:</span> ${data.total_token_count_before}
                 <br><span style="color: #17a2b8;">Total Token Count:</span> ${data.total_token_count}
+                <br><span style="color: #17a2b8;">Session Total Tokens:</span> ${data.session_total_tokens}  <!-- Muestra el acumulado por sesión -->
             `;
             tokenInfo.classList.add("token-info");
             outputArea.appendChild(tokenInfo);
